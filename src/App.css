@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply text-gray-600;
+}
+
+input[type="text"],
+textarea {
+  @apply text-sm;
+}
+
+button {
+  @apply text-base shadow min-w-min;
+}
+.left-nav-icon {
+  cursor: pointer;
+}
+
+left-nav-menu {
+  top: 72px;
+}
+
+.left-panel {
+  transition: transform 0.3s ease-in-out;
+}

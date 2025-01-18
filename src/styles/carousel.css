@@ -1,0 +1,45 @@
+.carousel-container {
+  @apply w-full h-auto mx-auto p-4 bg-zinc-50 shadow rounded-lg ml-0 mr-0;
+}
+
+.carousel-slide,
+.swiper-slide {
+  @apply !flex flex-row relative !h-[500px] justify-center items-center  bg-zinc-200 rounded-lg overflow-hidden z-50;
+}
+
+.carousel-slide img {
+  @apply object-cover w-auto h-auto;
+}
+
+.carousel-button {
+  @apply mt-2 bg-cyan-500 text-white px-4 py-2 rounded hover:bg-cyan-600 transition;
+}
+
+.carousel-button-remove {
+  @apply bg-red-400 text-white px-3 py-1 rounded hover:bg-red-600 transition;
+}
+
+.carousel-input {
+  @apply w-full mt-2 border border-gray-300 rounded p-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+
+.carousel-container.landscape .carousel-slide {
+  @apply w-full h-auto relative flex justify-center items-center  bg-zinc-200 overflow-hidden;
+}
+
+.carousel-container.landscape .carousel-slide img {
+  @apply !max-w-7xl !min-w-96 h-auto object-cover aspect-[4/3];
+}
+
+.carousel-container.portrait .carousel-slide img {
+  @apply object-cover w-auto h-full;
+}
+
+.carousel-container.square .carousel-slide img {
+  @apply w-[500px] h-[500px] object-cover mx-auto;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  @apply !text-cyan-500;
+}
