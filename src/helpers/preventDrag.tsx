@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
 export function preventDrag(event: React.DragEvent) {
-  event.stopPropagation();
-  event.preventDefault();
+	event.stopPropagation();
+	event.preventDefault();
 }
