@@ -90,8 +90,9 @@ You will see output similar to this:
 
 ```
 
-➜ Local: http://localhost:4173/
-➜ Network: http://<your-ip>:4173/
+➜  Local:   http://localhost:4173/
+➜  Network: use --host to expose
+➜  press h + enter to show help
 
 ```
 
