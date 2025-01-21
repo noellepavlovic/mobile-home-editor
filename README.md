@@ -26,7 +26,6 @@ Ensure you have the following installed on your system:
 
 - **Node.js** (version 16 or later)
 - **Git**
--
 
 #### 2. Clone the Repository
 
