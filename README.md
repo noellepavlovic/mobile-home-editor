@@ -2,6 +2,8 @@
 
 Elementalist is a dynamic, component-based web application designed to be a mobile home page editor. It allows users to create, edit, preview, and manage various content elements like text blocks, carousels, and call-to-action (CTA) components. This functionality is achieved through a combination of React functional components, state management, and drag-and-drop interactions. The overall approach focuses on modularity, user interactivity, and real-time feedback through live previews.
 
+![elementalist](https://github.com/user-attachments/assets/925ae3a4-0d84-4b3c-8bc5-a66c3c3eb886)
+
 ## Table of contents
 
 - [Technologies](#technologies)
