@@ -303,7 +303,7 @@ const Carousel: React.FC<CarouselProps> = ({
 				{!isPreview && (
 					<>
 						<div className='flex flex-row flex-wrap justify-between'>
-							<div className='mt-4 flex flex-row flex-wrap gap-2'>
+							<div className='mt-4 flex flex-row flex-wrap gap-2 items-center'>
 								<span className='text-sm font-bold mt-0'>Mode:</span>
 								{(['landscape', 'portrait', 'square'] as const).map((mode) => (
 									<label
