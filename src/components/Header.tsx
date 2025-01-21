@@ -24,7 +24,7 @@ const Header: React.FC = () => {
 					/>
 				</span>
 				{/* Tagline, hidden on small screens for responsive design */}
-				<h1 className='text-white text-base font-normal mr-4 hidden sm:block'>
+				<h1 className='text-white text-base font-normal mr-4 hidden md:block'>
 					Master the elements of a perfect home screen
 				</h1>
 			</div>
