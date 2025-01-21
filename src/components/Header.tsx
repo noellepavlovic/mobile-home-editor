@@ -13,9 +13,16 @@ const Header: React.FC = () => {
 			{/* Flex container for aligning title and tagline */}
 			<div className='flex justify-between items-center p-4'>
 				{/* Application title with styling for size, padding, and font weight */}
-				<h3 className='text-white text-4xl pl-3 pr-6 font-semibold'>
-					Elementalist
-				</h3>
+				<span className='flex row items-center'>
+					<h3 className='text-white text-4xl pl-3 pr-6 font-semibold'>
+						Elementalist
+					</h3>
+					<img
+						src='/magic-wand.png'
+						alt='Magic Wand'
+						className='w-12 h-12 mt-[-14px] ml-[-21px]'
+					/>
+				</span>
 				{/* Tagline, hidden on small screens for responsive design */}
 				<h1 className='text-white text-base font-normal mr-4 hidden sm:block'>
 					Master the elements of a perfect home screen
