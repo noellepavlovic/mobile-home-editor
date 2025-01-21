@@ -1,28 +1,33 @@
+/**
+ * CallToAction Component
+ * This component allows users to edit a "Call to Action" element.
+ * Features include customizing the title, description, button, and background.
+ * Provides a live preview and modals for specific customizations.
+ */
+
 import React, { useState } from 'react';
 import { useMobileEditor } from '../contexts/MobileEditorContext';
-import { validateURL } from '../helpers/validateURL';
 import { preventDrag } from '../helpers/preventDrag';
+import { validateURL } from '../helpers/validateURL';
 
 interface CallToActionProps {
 	element: any;
 	index: number;
 }
 
+// Available font sizes for customization
 const FONT_SIZES = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36];
 
 const CallToAction: React.FC<CallToActionProps> = ({ element, index }) => {
-	const { elements, setElements } = useMobileEditor();
-	console.log('CallToAction mounted. Elements:', elements);
+	const { setElements } = useMobileEditor();
 	const [editingField, setEditingField] = useState<
 		'title' | 'description' | 'button' | 'background' | null
 	>(null);
-
 	const [showDeleteElementModal, setShowDeleteElementModal] = useState(false);
-
 	const [linkError, setLinkError] = useState<string | null>(null);
-
 	const [hexInputError, setHexInputError] = useState<string | null>(null);
 
+	// Updates the configuration of the element in the context
 	const handleConfigChange = (key: string, value: string | number) => {
 		setElements((prev) => {
 			const cloned = [...prev];
@@ -34,9 +39,8 @@ const CallToAction: React.FC<CallToActionProps> = ({ element, index }) => {
 		});
 	};
 
+	// Handles hex input changes and validates the hex code
 	const handleHexInputChange = (value: string, key: string) => {
-		handleConfigChange(key, value);
-
 		if (/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(value)) {
 			setHexInputError(null);
 			handleConfigChange(key, value);
@@ -45,21 +49,24 @@ const CallToAction: React.FC<CallToActionProps> = ({ element, index }) => {
 		}
 	};
 
+	// Closes the edit modal and resets the hex input error state
 	const closeEditModal = () => {
 		setEditingField(null);
 		setHexInputError(null);
 		setLinkError(null);
 	};
 
+	// Deletes the element from the editor
 	const handleDeleteElement = () => {
 		setElements((prev) => prev.filter((_, i) => i !== index));
 		setShowDeleteElementModal(false);
 	};
 
+	// Handles link input changes and validates the URL
 	const handleLinkChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
 		handleConfigChange('link', value);
-
+		// Validate the URL format
 		try {
 			const validUrl = await validateURL({
 				args: {
@@ -75,6 +82,7 @@ const CallToAction: React.FC<CallToActionProps> = ({ element, index }) => {
 		}
 	};
 
+	// Destructure the element configuration
 	const {
 		title = '',
 		titleColour = '#000000',
@@ -91,9 +99,12 @@ const CallToAction: React.FC<CallToActionProps> = ({ element, index }) => {
 		isEdited = false,
 	} = element.config;
 
+	// Render the Call to Action editor
 	return (
 		<div className='p-2 mb-4'>
 			<h3 className='font-bold text-2xl mb-4'>Call to Action Editor</h3>
+
+			{/* Live Preview */}
 			{isEdited && (
 				<>
 					<p className='font-bold text-xl text-cyan-600 ml-1 mb-1'>
@@ -135,23 +146,30 @@ const CallToAction: React.FC<CallToActionProps> = ({ element, index }) => {
 				</>
 			)}
 
+			{/* Editor Fields */}
 			<div className='p-5 shadow rounded bg-zinc-50'>
 				<div className='mb-4'>
 					<div className='mb-2'>
-						<label className='font-medium text-xl'>Title:</label>
+						<label htmlFor='title-input' className='font-medium text-xl'>
+							Title:
+						</label>
 					</div>
 					<div className='flex flex-row gap-2 items-center'>
 						<input
+							id='title-input'
+							aria-label='Title'
 							type='text'
 							value={title}
 							onChange={(e) => handleConfigChange('title', e.target.value)}
 							onDragStart={preventDrag}
 							draggable
+							placeholder='Enter CAT title here'
 							className='w-full border border-gray-300 rounded px-2 py-1 max-w-[75%]'
 						/>
 						<button
+							aria-label='Edit Title Font'
 							onClick={() => setEditingField('title')}
-							className='inline-flex items-center p-2 h-[30px] rounded text-white bg-cyan-500 hover:bg-cyan-600'
+							className='title-edit inline-flex items-center p-2 h-[30px] rounded text-white bg-cyan-500 hover:bg-cyan-600'
 						>
 							Edit
 						</button>
@@ -169,11 +187,13 @@ const CallToAction: React.FC<CallToActionProps> = ({ element, index }) => {
 							}
 							onDragStart={preventDrag}
 							draggable
+							placeholder='Enter description here'
 							className='w-full border border-gray-300 rounded px-2 py-1 h-24 max-w-[90%]'
 						/>
 						<button
+							aria-label='Edit Description'
 							onClick={() => setEditingField('description')}
-							className='inline-flex items-center p-2 h-[30px] rounded text-white bg-cyan-500 hover:bg-cyan-600'
+							className='description-edit inline-flex items-center p-2 h-[30px] rounded text-white bg-cyan-500 hover:bg-cyan-600'
 						>
 							Edit
 						</button>
@@ -186,14 +206,16 @@ const CallToAction: React.FC<CallToActionProps> = ({ element, index }) => {
 					<div className='flex flex-row gap-2 items-center'>
 						<input
 							type='text'
+							aria-label='Button Label'
 							value={label}
 							onDragStart={preventDrag}
 							onChange={(e) => handleConfigChange('label', e.target.value)}
 							draggable
 							placeholder='Click Edit to configure'
-							className='w-full border border-gray-300 rounded px-2 py-1 max-w-[90%]'
+							className='button-edit w-full text-gray-400 border border-gray-300 rounded px-2 py-1 max-w-[90%]'
 						/>
 						<button
+							aria-label='Edit Button'
 							onClick={() => setEditingField('button')}
 							className='inline-flex items-center p-2 h-[30px] rounded text-white bg-cyan-500 hover:bg-cyan-600'
 						>
@@ -207,6 +229,7 @@ const CallToAction: React.FC<CallToActionProps> = ({ element, index }) => {
 					</div>
 					<div className='flex flex-row gap-2 items-center'>
 						<input
+							aria-label='Background Colour or Image URL'
 							type='text'
 							value={backgroundImage}
 							onChange={(e) =>
@@ -214,12 +237,13 @@ const CallToAction: React.FC<CallToActionProps> = ({ element, index }) => {
 							}
 							onDragStart={preventDrag}
 							draggable
-							placeholder='Edit Background Colour or Image URL'
+							placeholder='Click "Edit" to configure background colour or image URL'
 							className='w-full border border-gray-300 rounded px-2 py-1 max-w-[90%]'
 						/>
 						<button
+							aria-label='Edit Background'
 							onClick={() => setEditingField('background')}
-							className='inline-flex items-center p-2 h-[30px] rounded text-white bg-cyan-500 hover:bg-cyan-600'
+							className='bg-edit inline-flex items-center p-2 h-[30px] rounded text-white bg-cyan-500 hover:bg-cyan-600'
 						>
 							Edit
 						</button>
@@ -234,6 +258,9 @@ const CallToAction: React.FC<CallToActionProps> = ({ element, index }) => {
 					</button>
 				</div>
 			</div>
+
+			{/* Modals */}
+			{/* Edit Modal */}
 			{editingField && (
 				<div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50'>
 					<div className='bg-white p-4 rounded-lg shadow-lg w-[300px]'>
@@ -251,6 +278,7 @@ const CallToAction: React.FC<CallToActionProps> = ({ element, index }) => {
 								<label className='block mb-1'>Font Colour:</label>
 								<div className='flex gap-1 justify-between items-center mb-1'>
 									<input
+										aria-label='Title Colour'
 										type='text'
 										value={
 											editingField === 'title' ? titleColour : descriptionColour
@@ -325,6 +353,7 @@ const CallToAction: React.FC<CallToActionProps> = ({ element, index }) => {
 								<label className='block mb-1'>Button Colour:</label>
 								<div className='flex gap-1 justify-between items-center mb-1'>
 									<input
+										aria-label='Button Colour'
 										type='text'
 										value={buttonColour}
 										onChange={(e) =>
@@ -338,6 +367,7 @@ const CallToAction: React.FC<CallToActionProps> = ({ element, index }) => {
 										className='w-full mb-4 border border-gray-300 rounded px-2 py-1'
 									/>
 									<input
+										aria-label='Button Colour Picker'
 										type='color'
 										value={buttonColour}
 										onChange={(e) =>
@@ -354,6 +384,7 @@ const CallToAction: React.FC<CallToActionProps> = ({ element, index }) => {
 								<label className='block mb-1'>Button Text Colour:</label>
 								<div className='flex gap-1 justify-between items-center mb-1'>
 									<input
+										aria-label='Button Text Colour'
 										type='text'
 										value={textColour}
 										onChange={(e) =>
@@ -367,6 +398,7 @@ const CallToAction: React.FC<CallToActionProps> = ({ element, index }) => {
 										className='w-full mb-4 border border-gray-300 rounded px-2 py-1'
 									/>
 									<input
+										aria-label='Button Text Colour Picker'
 										type='color'
 										value={textColour}
 										onChange={(e) =>
@@ -380,6 +412,7 @@ const CallToAction: React.FC<CallToActionProps> = ({ element, index }) => {
 
 								<label className='block mb-1'>Button URL:</label>
 								<input
+									aria-label='Button URL'
 									type='text'
 									value={link}
 									onChange={handleLinkChange}
@@ -396,6 +429,7 @@ const CallToAction: React.FC<CallToActionProps> = ({ element, index }) => {
 								<label className='block mb-1'>Background Colour:</label>
 								<div className='flex gap-1 justify-between items-center mb-1'>
 									<input
+										aria-label='Background Colour'
 										type='text'
 										value={backgroundColor}
 										onChange={(e) =>
@@ -410,6 +444,7 @@ const CallToAction: React.FC<CallToActionProps> = ({ element, index }) => {
 									/>
 
 									<input
+										aria-label='Background Colour Picker'
 										type='color'
 										value={backgroundColor}
 										onChange={(e) =>
@@ -420,12 +455,14 @@ const CallToAction: React.FC<CallToActionProps> = ({ element, index }) => {
 										className='w-[33px] h-[32px] px-0.5 mb-4 border border-gray-300 rounded'
 									/>
 								</div>
+								{/* Display hex input error message */}
 								{hexInputError && (
 									<p className='text-red-500 text-sm mb-4'>{hexInputError}</p>
 								)}
 
 								<label className='block mb-1'>Background Image URL:</label>
 								<input
+									aria-label='Background Image URL'
 									type='text'
 									value={backgroundImage}
 									onChange={(e) =>
@@ -439,12 +476,14 @@ const CallToAction: React.FC<CallToActionProps> = ({ element, index }) => {
 						)}
 						<div className='flex justify-end space-x-2'>
 							<button
+								aria-label='Cancel Edit'
 								onClick={closeEditModal}
 								className='bg-gray-300 px-3 py-1 rounded hover:bg-gray-400'
 							>
 								Cancel
 							</button>
 							<button
+								aria-label='Save Edit'
 								onClick={closeEditModal}
 								disabled={
 									(editingField === 'button' && !!linkError) || !!hexInputError
@@ -458,24 +497,25 @@ const CallToAction: React.FC<CallToActionProps> = ({ element, index }) => {
 				</div>
 			)}
 
+			{/* Delete Element Modal */}
 			{showDeleteElementModal && (
 				<div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50'>
-					<div className='bg-white p-4 rounded shadow-lg w-1/3'>
+					<div className='bg-white p-4 rounded shadow-lg max-w-[300px] min-w-[200px]'>
 						<p className='mb-4'>
-							Are you sure you want to delete this entire element?
+							Are you sure you want to delete this element?
 						</p>
-						<div className='flex justify-end gap-2'>
+						<div className='flex flex-wrap justify-end gap-2'>
 							<button
 								onClick={() => setShowDeleteElementModal(false)}
-								className='bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600'
+								className='bg-gray-500 text-white px-2 py-2 rounded hover:bg-gray-600'
 							>
 								Cancel
 							</button>
 							<button
 								onClick={handleDeleteElement}
-								className='bg-rose-500 text-white px-4 py-2 rounded hover:bg-rose-600'
+								className='bg-rose-500 text-white px-2 py-2 rounded hover:bg-rose-600'
 							>
-								Confirm Delete
+								Delete
 							</button>
 						</div>
 					</div>

@@ -3,25 +3,25 @@
 @tailwind utilities;
 
 body {
-  @apply text-gray-600;
+	@apply text-gray-600;
 }
 
-input[type="text"],
+input[type='text'],
 textarea {
-  @apply text-sm;
+	@apply text-sm;
 }
 
 button {
-  @apply text-base shadow min-w-min;
+	@apply text-base shadow min-w-min;
 }
 .left-nav-icon {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 left-nav-menu {
-  top: 72px;
+	top: 72px;
 }
 
 .left-panel {
-  transition: transform 0.3s ease-in-out;
+	transition: transform 0.3s ease-in-out;
 }

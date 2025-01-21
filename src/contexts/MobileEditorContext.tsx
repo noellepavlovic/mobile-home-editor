@@ -1,82 +1,57 @@
 import React, {
-	createContext,
-	useContext,
-	useState,
-	ReactNode,
-	useEffect,
+	createContext, // Creates a context for managing and sharing state.
+	useContext, // Allows access to the context from child components.
+	useState, // Manages local state within the component.
+	ReactNode, // Type for React child components.
+	useEffect, // Runs side effects such as persisting state to localStorage.
 } from 'react';
 
-// ------------------------------
-// Type Definitions
-// ------------------------------
+// The `ElementConfig` type and context setup will use these utilities.
 
-/**
- * Represents the configuration of an individual element in the mobile editor.
- */
+// Type definition for the configuration of an individual element
 type ElementConfig = {
 	id: string; // Unique identifier for the element
-	type: 'text-editor' | 'call-to-action' | 'carousel'; // The type of the element
-	config: { [key: string]: any }; // Configuration data specific to the element type
+	type: 'text-editor' | 'call-to-action' | 'carousel'; // Specifies the type of element
+	config: { [key: string]: any }; // Configuration details specific to the element type
 };
 
-/**
- * Represents the context type for the MobileEditor.
- */
+// Type definition for the context, including state and functions
 type MobileEditorContextType = {
 	elements: ElementConfig[]; // List of all elements in the editor
-	setElements: React.Dispatch<React.SetStateAction<ElementConfig[]>>; // State updater for elements
+	setElements: React.Dispatch<React.SetStateAction<ElementConfig[]>>; // Function to update the state of elements
 	addElement: (type: 'text-editor' | 'call-to-action' | 'carousel') => void; // Function to add a new element
 };
 
-// ------------------------------
-// Context Creation
-// ------------------------------
-
-/**
- * Creates a React context for the mobile editor.
- * Default value is `undefined` to ensure it is used within a provider.
- */
+// Create a context with an initial value of `undefined`
 const MobileEditorContext = createContext<MobileEditorContextType | undefined>(
 	undefined
 );
 
-// ------------------------------
-// Provider Component
-// ------------------------------
-
-/**
- * MobileEditorProvider Component
- * Provides the `MobileEditorContext` to its children. Manages the state of elements
- * in the mobile editor, including adding new elements and updating their configurations.
- * @param children - The child components that require access to the mobile editor context.
- */
-
+// Provider component to manage and expose the context state
 export const MobileEditorProvider: React.FC<{ children: ReactNode }> = ({
 	children,
 }) => {
-	// 1) Load from localStorage on initial mount
+	// State for storing editor elements, initialized from `localStorage`
 	const [elements, setElements] = useState<ElementConfig[]>(() => {
 		try {
+			// Attempt to load saved elements from localStorage
 			const saved = localStorage.getItem('mobileEditorElements');
 			return saved ? JSON.parse(saved) : [];
 		} catch (err) {
+			// Handle errors in parsing localStorage data
 			console.error('Failed to parse localStorage:', err);
 			return [];
 		}
 	});
 
-	console.log('Initial elements:', elements);
-
-	// 2) Whenever `elements` changes, save to localStorage
+	// Persist the `elements` state to `localStorage` whenever it changes
 	useEffect(() => {
 		localStorage.setItem('mobileEditorElements', JSON.stringify(elements));
 	}, [elements]);
 
-	/**
-	 * Adds a new element to the editor.
-	 * @param type - The type of the new element (e.g., "text-editor", "call-to-action", "carousel").
-	 */
+	// Function to add a new element to the editor
 	const addElement = (type: 'text-editor' | 'call-to-action' | 'carousel') => {
+		// Ensure a valid type is provided
 		if (!type) {
 			console.error(
 				'Type is undefined in addElement. Check the source of the call.'
@@ -84,14 +59,14 @@ export const MobileEditorProvider: React.FC<{ children: ReactNode }> = ({
 			return;
 		}
 
-		// Create a new element based on its type with default configurations
+		// Create a new element with default configuration
 		const newElement: ElementConfig = {
-			id: Date.now().toString(), // Generate a unique ID based on the current timestamp
+			id: Date.now().toString(), // Use current timestamp as a unique ID
 			type,
 			config: {
 				images: [
 					{
-						url: 'https://picsum.photos/800/1200?random=1', // Placeholder image
+						url: 'https://picsum.photos/800/1200?random=1',
 						title: 'Default Title',
 						description: 'Default Description',
 					},
@@ -106,37 +81,28 @@ export const MobileEditorProvider: React.FC<{ children: ReactNode }> = ({
 						description: 'Default Description',
 					},
 				],
-				view: 'landscape', // Default display mode
+				view: 'landscape', // Default display mode for the element
 			},
 		};
 
-		console.log('New element created:', newElement);
-
-		// Add the new element to the existing list of elements
+		// Add the new element to the state
 		setElements((prev) => [...prev, newElement]);
-
-		console.log('Elements updated:', elements);
 	};
 
 	return (
+		// Provide the `elements` state and helper functions to child components
 		<MobileEditorContext.Provider value={{ elements, setElements, addElement }}>
 			{children}
 		</MobileEditorContext.Provider>
 	);
 };
 
-// ------------------------------
-// Custom Hook
-// ------------------------------
-
-/**
- * Custom hook to access the `MobileEditorContext`.
- * Throws an error if used outside of a `MobileEditorProvider`.
- * @returns The context value containing elements, setElements, and addElement.
- */
+// Hook to access the MobileEditor context
 export const useMobileEditor = () => {
+	// Retrieve the context
 	const context = useContext(MobileEditorContext);
 
+	// Throw an error if the hook is used outside of the provider
 	if (!context) {
 		throw new Error(
 			'useMobileEditor must be used within a MobileEditorProvider'
