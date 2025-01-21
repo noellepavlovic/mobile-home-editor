@@ -245,7 +245,7 @@ const Carousel: React.FC<CarouselProps> = ({
 	return (
 		<>
 			{/* Render carousel editor UI */}
-			<h3 className='font-bold text-2xl mb-3'>"Carousel" Element Editor</h3>
+			<h3 className='font-bold text-2xl mb-3'>Carousel Element Editor</h3>
 			<div className={`carousel-container  ${view}`}>
 				<Swiper
 					modules={[Navigation, Pagination]}
@@ -349,8 +349,8 @@ const Carousel: React.FC<CarouselProps> = ({
 
 				{showAddImageModal && (
 					<div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-2000'>
-						<div className='bg-white p-6 rounded-lg shadow-lg max-w-[400px] w-3/4 min-w-[250px]'>
-							<h3 className='text-lg font-bold mb-4'>Add New Image</h3>
+						<div className='bg-white m-auto p-6 rounded-lg shadow-lg  max-w-[400px] w-3/4 min-w-[250px]'>
+							<h3 className='text-lg font-bold mb-2'>Add New Image</h3>
 							<input
 								type='text'
 								placeholder='Image URL'
@@ -368,7 +368,7 @@ const Carousel: React.FC<CarouselProps> = ({
 									<img
 										src={newImage.url}
 										alt='Preview'
-										className='max-h-96 rounded shadow'
+										className='max-h-[200px] md:max-h-96 rounded shadow'
 									/>
 								</div>
 							)}
@@ -403,13 +403,13 @@ const Carousel: React.FC<CarouselProps> = ({
 										setShowAddImageModal(false);
 										setAddImageUrlError(null);
 									}}
-									className='bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600'
+									className='bg-gray-500 text-white px-2 py-2 rounded hover:bg-gray-600'
 								>
 									Cancel
 								</button>
 								<button
 									onClick={handleAddImage}
-									className='bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600'
+									className='bg-teal-500 text-white px-2 py-2 rounded hover:bg-teal-600'
 								>
 									Add Image
 								</button>
@@ -421,7 +421,7 @@ const Carousel: React.FC<CarouselProps> = ({
 				{showEditModal && editImage && (
 					<div className='fixed max-h- inset-0 flex items-center justify-center bg-black bg-opacity-50 z-2000 overflow-y-auto'>
 						<div className='bg-white m-auto p-6 rounded-lg shadow-lg  max-w-[400px] w-3/4 min-w-[250px]'>
-							<h3 className='text-lg font-bold mb-4'>Edit Image</h3>
+							<h3 className='text-lg font-bold mb-2'>Edit Image</h3>
 							<input
 								type='text'
 								placeholder='Image URL'
@@ -441,7 +441,7 @@ const Carousel: React.FC<CarouselProps> = ({
 									<img
 										src={editImage.url}
 										alt='Preview'
-										className='max-h-96 rounded shadow'
+										className='max-h-[200px] md:max-h-96 rounded shadow'
 									/>
 								</div>
 							)}
@@ -456,7 +456,7 @@ const Carousel: React.FC<CarouselProps> = ({
 								}
 								onDragStart={preventDrag}
 								draggable
-								className='w-full border border-gray-300 rounded p-2 mb-4'
+								className='w-full border border-gray-300 rounded p-2 mb-2'
 							/>
 							<input
 								type='text'
@@ -469,12 +469,12 @@ const Carousel: React.FC<CarouselProps> = ({
 								}
 								onDragStart={preventDrag}
 								draggable
-								className='w-full border border-gray-300 rounded p-2 mb-4'
+								className='w-full border border-gray-300 rounded p-2 mb-3'
 							/>
 							<div className='flex flex-wrap justify-end gap-2'>
 								<button
 									onClick={handleDeletePrompt}
-									className='bg-rose-500 text-white px-4 py-2 rounded hover:bg-rose-600'
+									className='bg-rose-500 text-white px-2 py-2 rounded hover:bg-rose-600'
 								>
 									Delete
 								</button>
@@ -484,14 +484,14 @@ const Carousel: React.FC<CarouselProps> = ({
 										setEditImage(null);
 										setEditImageUrlError(null);
 									}}
-									className='bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600'
+									className='bg-gray-500 text-white px-2 py-2 rounded hover:bg-gray-600'
 								>
 									Cancel
 								</button>
 								<button
 									onClick={handleSaveEdit}
 									disabled={!editImage.url || !!editImageUrlError}
-									className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed'
+									className='bg-blue-500 text-white px-2 py-2 rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed'
 								>
 									Save
 								</button>
